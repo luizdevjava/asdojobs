@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import Link from 'next/link';
 
 interface Anuncio {
   id: string;
@@ -111,7 +112,8 @@ export default function Home() {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`w-4 h-4 ${i < rating ? 'fill-current star-rating' : 'text-gray-600'}`}
+        className={`w-4 h-4 ${i < rating ? 'fill-current' : 'text-gray-600'}`}
+        style={{ color: '#ff0033' }}
       />
     ));
   };
@@ -121,9 +123,21 @@ export default function Home() {
     const primeiraImagem = imagens[0] || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop';
 
     return (
-      <Card className={`anuncio-card ${isDestaque ? 'neon-border' : ''} relative`}>
+      <Card 
+        className={`relative overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${
+          isDestaque ? 'ring-2 ring-red-500' : ''
+        }`}
+        style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}
+      >
         {isDestaque && (
-          <Badge className="absolute top-2 right-2 z-10 bg-primary text-primary-foreground neon-glow">
+          <Badge 
+            className="absolute top-2 right-2 z-10" 
+            style={{ backgroundColor: '#ff0033' }}
+          >
             DESTAQUE
           </Badge>
         )}
@@ -131,30 +145,47 @@ export default function Home() {
           <img
             src={primeiraImagem}
             alt={anuncio.titulo}
-            className="anuncio-image w-full h-full object-cover"
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
         <CardContent className="p-4">
-          <h3 className="text-lg font-bold text-white mb-1 neon-text">{anuncio.titulo}</h3>
+          <h3 
+            className="text-lg font-bold mb-1"
+            style={{ 
+              color: '#f8f8f8',
+              textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+            }}
+          >
+            {anuncio.titulo}
+          </h3>
           <div className="flex items-center text-gray-300 text-sm mb-2">
             <MapPin className="w-4 h-4 mr-1" />
             {anuncio.cidade}{anuncio.bairro && `, ${anuncio.bairro}`}
           </div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center">
-              <DollarSign className="w-4 h-4 mr-1 text-primary" />
-              <span className="text-white font-bold">R$ {anuncio.precoHora}/h</span>
+              <DollarSign className="w-4 h-4 mr-1" style={{ color: '#ff0033' }} />
+              <span className="font-bold" style={{ color: '#f8f8f8' }}>
+                R$ {anuncio.precoHora}/h
+              </span>
             </div>
             <div className="flex">
               {renderStars(anuncio.estrelas)}
             </div>
           </div>
           <div className="flex gap-2">
-            <Button className="flex-1 bg-primary hover:bg-primary/90 neon-hover">
+            <Button 
+              className="flex-1 hover:shadow-lg transition-shadow"
+              style={{ backgroundColor: '#ff0033' }}
+            >
               Ver Perfil
             </Button>
-            <Button variant="outline" size="icon" className="neon-border">
+            <Button 
+              variant="outline" 
+              size="icon"
+              style={{ borderColor: '#ff0033' }}
+            >
               <Heart className="w-4 h-4" />
             </Button>
           </div>
@@ -164,33 +195,65 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground blurry-bg">
+    <div 
+      className="min-h-screen"
+      style={{
+        backgroundColor: '#0a0a0a',
+        color: '#f8f8f8',
+        backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255, 0, 51, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 0, 51, 0.2) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(255, 0, 51, 0.2) 0%, transparent 50%)'
+      }}
+    >
       {/* Header */}
-      <header className="glass-morphism sticky top-0 z-50 border-b border-border">
+      <header 
+        className="sticky top-0 z-50 border-b"
+        style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          borderBottomColor: 'rgba(255, 255, 255, 0.1)'
+        }}
+      >
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center neon-glow">
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ 
+                  backgroundColor: '#ff0033',
+                  boxShadow: '0 0 20px rgba(255, 0, 51, 0.5)'
+                }}
+              >
                 <span className="text-white font-bold text-xl">A</span>
               </div>
-              <h1 className="text-2xl font-bold text-white neon-text">Acompanhantes</h1>
+              <h1 
+                className="text-2xl font-bold"
+                style={{ 
+                  color: '#f8f8f8',
+                  textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+                }}
+              >
+                Acompanhantes
+              </h1>
             </div>
             
             <nav className="hidden md:flex items-center space-x-4">
-              <Button 
-                variant="outline" 
-                className="neon-border hover:neon-hover"
-                onClick={() => window.location.href = '/login'}
-              >
-                <User className="w-4 h-4 mr-2" />
-                Login
-              </Button>
-              <Button 
-                className="bg-primary hover:bg-primary/90 neon-hover"
-                onClick={() => window.location.href = '/register'}
-              >
-                Anunciar
-              </Button>
+              <Link href="/login">
+                <Button 
+                  variant="outline"
+                  style={{ borderColor: '#ff0033' }}
+                  className="hover:shadow-lg transition-shadow"
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button 
+                  style={{ backgroundColor: '#ff0033' }}
+                  className="hover:shadow-lg transition-shadow"
+                >
+                  Anunciar
+                </Button>
+              </Link>
             </nav>
 
             <Button
@@ -205,20 +268,24 @@ export default function Home() {
           {/* Mobile Menu */}
           {mobileMenuOpen && (
             <nav className="md:hidden mt-4 space-y-2">
-              <Button 
-                variant="outline" 
-                className="w-full neon-border"
-                onClick={() => window.location.href = '/login'}
-              >
-                <User className="w-4 h-4 mr-2" />
-                Login
-              </Button>
-              <Button 
-                className="w-full bg-primary hover:bg-primary/90"
-                onClick={() => window.location.href = '/register'}
-              >
-                Anunciar
-              </Button>
+              <Link href="/login">
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  style={{ borderColor: '#ff0033' }}
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button 
+                  className="w-full"
+                  style={{ backgroundColor: '#ff0033' }}
+                >
+                  Anunciar
+                </Button>
+              </Link>
             </nav>
           )}
         </div>
@@ -227,10 +294,36 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Tag Cloud */}
         <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-4 neon-text">Categorias Populares</h2>
-          <div className="tag-cloud">
+          <h2 
+            className="text-xl font-bold mb-4"
+            style={{ 
+              color: '#f8f8f8',
+              textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+            }}
+          >
+            Categorias Populares
+          </h2>
+          <div className="flex flex-wrap gap-2">
             {tags.map((tag, index) => (
-              <span key={index} className="tag">
+              <span 
+                key={index} 
+                className="inline-block px-3 py-1 text-xs rounded-full cursor-pointer transition-all duration-300 hover:shadow-lg"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#ff0033';
+                  e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 0, 51, 0.3)';
+                  e.currentTarget.style.background = 'rgba(255, 0, 51, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                }}
+              >
                 {tag}
               </span>
             ))}
@@ -239,7 +332,13 @@ export default function Home() {
 
         {/* Filtros */}
         <section className="mb-8">
-          <Card className="glass-morphism">
+          <Card
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)'
+            }}
+          >
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="relative">
@@ -248,11 +347,20 @@ export default function Home() {
                     placeholder="Buscar..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 glass-morphism border-border"
+                    className="pl-10"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderColor: 'rgba(255, 255, 255, 0.1)'
+                    }}
                   />
                 </div>
                 <Select value={cidadeFilter} onValueChange={setCidadeFilter}>
-                  <SelectTrigger className="glass-morphism border-border">
+                  <SelectTrigger 
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderColor: 'rgba(255, 255, 255, 0.1)'
+                    }}
+                  >
                     <SelectValue placeholder="Cidade" />
                   </SelectTrigger>
                   <SelectContent>
@@ -268,9 +376,15 @@ export default function Home() {
                   type="number"
                   value={precoMax}
                   onChange={(e) => setPrecoMax(e.target.value)}
-                  className="glass-morphism border-border"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: 'rgba(255, 255, 255, 0.1)'
+                  }}
                 />
-                <Button className="bg-primary hover:bg-primary/90 neon-hover">
+                <Button 
+                  style={{ backgroundColor: '#ff0033' }}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <Filter className="w-4 h-4 mr-2" />
                   Filtrar
                 </Button>
@@ -282,7 +396,15 @@ export default function Home() {
         {/* Anúncios em Destaque */}
         {anunciosDestaque.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-2xl font-bold text-white mb-6 neon-text">Anúncios em Destaque</h2>
+            <h2 
+              className="text-2xl font-bold mb-6"
+              style={{ 
+                color: '#f8f8f8',
+                textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+              }}
+            >
+              Anúncios em Destaque
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {anunciosDestaque.map((anuncio) => (
                 <AnuncioCard key={anuncio.id} anuncio={anuncio} isDestaque />
@@ -293,7 +415,15 @@ export default function Home() {
 
         {/* Demais Anúncios */}
         <section>
-          <h2 className="text-2xl font-bold text-white mb-6 neon-text">Todos os Anúncios</h2>
+          <h2 
+            className="text-2xl font-bold mb-6"
+            style={{ 
+              color: '#f8f8f8',
+              textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+            }}
+          >
+            Todos os Anúncios
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredAnuncios.map((anuncio) => (
               <AnuncioCard key={anuncio.id} anuncio={anuncio} />
@@ -309,11 +439,26 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="glass-morphism border-t border-border mt-16">
+      <footer 
+        className="border-t mt-16"
+        style={{
+          background: 'rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(10px)',
+          borderTopColor: 'rgba(255, 255, 255, 0.1)'
+        }}
+      >
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-lg font-bold text-white mb-4 neon-text">Acompanhantes</h3>
+              <h3 
+                className="text-lg font-bold mb-4"
+                style={{ 
+                  color: '#f8f8f8',
+                  textShadow: '0 0 10px rgba(255, 0, 51, 0.8)'
+                }}
+              >
+                Acompanhantes
+              </h3>
               <p className="text-gray-400 text-sm">
                 A melhor plataforma para encontrar acompanhantes de luxo em sua cidade.
               </p>
@@ -321,19 +466,19 @@ export default function Home() {
             <div>
               <h4 className="text-white font-semibold mb-3">Links Rápidos</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-primary transition-colors">Sobre Nós</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Como Funciona</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Termos de Uso</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Privacidade</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Sobre Nós</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Como Funciona</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Termos de Uso</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Privacidade</a></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-semibold mb-3">Cidades</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><a href="#" className="hover:text-primary transition-colors">São Paulo</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Rio de Janeiro</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Brasília</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Belo Horizonte</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">São Paulo</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Rio de Janeiro</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Brasília</a></li>
+                <li><a href="#" className="hover:text-red-500 transition-colors">Belo Horizonte</a></li>
               </ul>
             </div>
             <div>
@@ -345,8 +490,11 @@ export default function Home() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-border mt-8 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2024 Acompanhantes. Todos os direitos reservados.</p>
+          <div 
+            className="border-t mt-8 pt-8 text-center text-gray-400 text-sm"
+            style={{ borderTopColor: 'rgba(255, 255, 255, 0.1)' }}
+          >
+            <p>© 2024 Acompanhantes. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
