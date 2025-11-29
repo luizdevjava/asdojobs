@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  banned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  anuncios              Anuncio[]
+  destaquePedidos       DestaquePedido[]
+  favoritos             Favorito[]
+
+  @@map("users")
+}
+
+model Anuncio {
+  id          String   @id @default(cuid())
+  userId      String
+  titulo      String
+  descricao   String
+  precoHora   Float
+  cidade      String
+  bairro      String?
+  imagens     String   // JSON array de URLs das imagens
+  destaque    Boolean  @default(false)
+  estrelas    Int      @default(0)
+  ativo       Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destaquePedidos DestaquePedido[]
+  favoritos       Favorito[]
+
+  @@map("anuncios")
+}
+
+model DestaquePedido {
+  id        String   @id @default(cuid())
+  anuncioId String
+  userId    String
+  status    String   @default("pendente") // pendente, aprovado, negado
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  anuncio Anuncio @relation(fields: [anuncioId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("destaque_pedidos")
+}
+
+model Favorito {
+  id        String   @id @default(cuid())
+  anuncioId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  // Relations
+  anuncio Anuncio @relation(fields: [anuncioId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([anuncioId, userId])
+  @@map("favoritos")
+}
