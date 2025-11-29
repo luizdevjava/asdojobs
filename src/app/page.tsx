@@ -30,7 +30,7 @@ const mockAnuncios: Anuncio[] = [
     cidade: 'São Paulo',
     bairro: 'Jardins',
     precoHora: 500,
-    imagens: '["https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop"]',
+    imagens: '["https://picsum.photos/400/400?random=1"]',
     estrelas: 5,
     destaque: true,
     user: { name: 'Bella' }
@@ -41,7 +41,7 @@ const mockAnuncios: Anuncio[] = [
     cidade: 'Rio de Janeiro',
     bairro: 'Copacabana',
     precoHora: 300,
-    imagens: '["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop"]',
+    imagens: '["https://picsum.photos/400/400?random=2"]',
     estrelas: 4,
     destaque: true,
     user: { name: 'Maria' }
@@ -52,7 +52,7 @@ const mockAnuncios: Anuncio[] = [
     cidade: 'São Paulo',
     bairro: 'Vila Madalena',
     precoHora: 400,
-    imagens: '["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&h=400&fit=crop"]',
+    imagens: '["https://picsum.photos/400/400?random=3"]',
     estrelas: 5,
     destaque: false,
     user: { name: 'Ana' }
@@ -63,7 +63,7 @@ const mockAnuncios: Anuncio[] = [
     cidade: 'Brasília',
     bairro: 'Asa Norte',
     precoHora: 350,
-    imagens: '["https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=400&h=400&fit=crop"]',
+    imagens: '["https://picsum.photos/400/400?random=4"]',
     estrelas: 4,
     destaque: false,
     user: { name: 'Carla' }
@@ -74,7 +74,7 @@ const mockAnuncios: Anuncio[] = [
     cidade: 'Belo Horizonte',
     bairro: 'Savassi',
     precoHora: 450,
-    imagens: '["https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&h=400&fit=crop"]',
+    imagens: '["https://picsum.photos/400/400?random=5"]',
     estrelas: 5,
     destaque: false,
     user: { name: 'Juliana' }
@@ -102,7 +102,7 @@ export default function Home() {
   const filteredAnuncios = anuncios.filter(anuncio => {
     const matchesSearch = anuncio.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          anuncio.cidade.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCidade = !cidadeFilter || anuncio.cidade === cidadeFilter;
+    const matchesCidade = !cidadeFilter || cidadeFilter === 'all' || anuncio.cidade === cidadeFilter;
     const matchesPreco = !precoMax || anuncio.precoHora <= parseInt(precoMax);
     
     return matchesSearch && matchesCidade && matchesPreco && !anuncio.destaque;
@@ -120,7 +120,7 @@ export default function Home() {
 
   const AnuncioCard = ({ anuncio, isDestaque = false }: { anuncio: Anuncio; isDestaque?: boolean }) => {
     const imagens = JSON.parse(anuncio.imagens || '[]');
-    const primeiraImagem = imagens[0] || 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=400&fit=crop';
+    const primeiraImagem = imagens[0] || 'https://picsum.photos/400/400?random=1';
 
     return (
       <Card 
@@ -364,7 +364,7 @@ export default function Home() {
                     <SelectValue placeholder="Cidade" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas</SelectItem>
+                    <SelectItem value="all">Todas</SelectItem>
                     <SelectItem value="São Paulo">São Paulo</SelectItem>
                     <SelectItem value="Rio de Janeiro">Rio de Janeiro</SelectItem>
                     <SelectItem value="Brasília">Brasília</SelectItem>
